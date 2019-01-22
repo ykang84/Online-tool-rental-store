@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+
+</head>
+<body>
+<% include common/navbar_clerk.ejs %>
+<h1>Tool Inventory Report</h1>
+<p>The list of tools where their total profit and cost are shown for all time</p>
+
+<hr>
+
+<div class="container">
+
+<form action = "/toolReport" method = "POST" >
+
+    <div class="row">
+        <label class="col-lg-1"><b>Type</b></label>
+        <div id = "radio" >
+            <b>All Tool</b><input type="radio" id = "all" value ="" name="tool_type" >
+            <b>Hand Tool</b><input type="radio" id ="hand_tool" value ="hand tool" name="tool_type">
+            <b>Garden Tool</b><input type="radio" id = "garden_tool" value="garden tool" name="tool_type">
+            <b>Ladder</b> <input type="radio" id = "ladder" value="ladder" name ="tool_type">
+            <b>Power Tool</b> <input type="radio" id = "power" value="power tool" name="tool_type">
+        </div>
+
+    </div>
+    <input type="text" placeholder="keyword" name="keyword">
+    <input type="submit" value="Search" class="btn-success">
+</form>
+
+<hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tool ID</th>
+            <th>Current Status</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Rental Profit</th>
+            <th>Total Cost</th>
+            <th>Total Profit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (var i = 0; i < tool.length; i++) { %>
+        <tr>
+            <td><%= tool[i].toolid%></td>
+            <td><%= tool[i].status%></td>
+            <td><%= tool[i].date%></td>
+            <td><a href="/tool/<%= tool[i].toolid%>/<%= tool[i].subType%>"
+                   onclick="window.open('/tool/<%= tool[i].toolid%>/<%= tool[i].subType%>',
+                                        'Tool Detail',
+                                        'width=300,height=250');
+                   return false;">
+                    <%= tool[i].shortDes%></a>
+            </td>
+            <td><%= tool[i].rental.toFixed(2)%></td>
+            <td><%= tool[i].cost.toFixed(2)%></td>
+            <td><%= tool[i].profit.toFixed(2)%></td>
+        </tr>
+        <%}%>
+    </tbody>
+</table>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,22 @@
+Team##055:
+Jianbing Zhang    email: jzhang964@gatech.edu
+Yashu Kang    email: yashu.kang@gatech.edu
+Aoji Xie    email: axie33@gatech.edu
+Qianzhen Li    email: qzli@gatech.edu
+
+SQL:
+The SQL sections are included in the .js files within folder "routes".
+
+Customer/Clerk login: index.js, app.js
+Customer registration: index.js
+
+Customer:
+View Profile: viewProfile.js
+Check tool availability: tool.js
+Make reservation: makeReservation.js
+
+Clerk:
+Pick-up: pickup.js
+Drop-off: dropoff.js
+Add New Tool: add_tool.js
+Reoprt: report.js

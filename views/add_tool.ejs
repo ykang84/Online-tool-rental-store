@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <title>Add New Tool</title>
+</head>
+<body>
+<% include common/navbar_clerk.ejs %>
+<div id = "add_tool" class="container">
+    <form  class="form-horizontal" id="add_tool" role="form" action="/add_tool" method="POST">
+        <div class="form-horizontal" role="form">
+            <div id = "form-vertical">
+                <h1><strong>Add Tool</strong></h1>
+                <div class="col-md-2">
+                    <div>
+                        <label><b>Power Source:</b></label>
+                        <select id="power_source" name ="power_source" class="form-control" required>
+                            <option value = "all" selected>All</option>
+                            <option value = "electric">Electric</option>
+                            <option value = "cordless">Cordless</option>
+                            <option value = "gas">Gas</option>
+                            <option value = "manual">Manual</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <label class="col-lg-1"><b>Type:</b></label>
+                        <input type="radio" id="hand_tool" value="hand tool" name="tool_type" required><b>Hand Tool</b>
+                        <input type="radio" id="garden_tool" value="garden tool" name="tool_type"><b>Garden Tool</b>
+                        <input type="radio" id="ladder" value="ladder" name="tool_type"><b>Ladder</b>
+                        <input type="radio" id="power_tool" value="power tool" name="tool_type"><b>Power Tool</b>
+                    </div>
+
+                    <div class = "row">
+                        <div class ="col-lg-4">
+                            <label><b>Sub-Type</b></label>
+                            <select id="sub_type" name = "sub_type" class="form-control" required>
+
+                            </select>
+                        </div>
+                        <div class ="col-lg-4">
+                            <label><b>Sub-Option</b></label>
+                            <select id="sub_option" name="sub_option" class="form-control" required>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class ="col-lg-3">
+                            <label ><b>Purchase Price</b></label>
+                            <input type="number" min="0" step = "any" id="purchase_price" name="purchase_price" class="form-control" required>
+                         </div>
+                        <div  class ="col-lg-3">
+                            <label><b>Manufacturer</b></label>
+                            <input type="text" id="manufacturer" name="manufacturer" class="form-control" required>
+                        </div>
+                        <div class ="col-lg-2">
+                            <label ><b>Material</b></label>
+                            <input type="text" id="material" name="material" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class ="row">
+                        <div class ="col-lg-2">
+                            <label><b>Width/Diameter</b></label>
+                            <input type="number" min="0" step = "1" id="width" name="width" class="form-control" required>
+                        </div>
+                        <div class ="col-lg-2">
+                            <label><b>Width Fraction</b></label>
+                            <select id="width_fraction" name="width_fraction" class="form-control" required>
+                                <option value="0" selected>0</option>
+                                <option value="0.125">1/8</option>
+                                <option value="0.25">1/4</option>
+                                <option value="0.375">3/8</option>
+                                <option value="0.5">1/2</option>
+                                <option value="0.625">5/8</option>
+                                <option value="0.75">3/4</option>
+                                <option value="0.875">7/8</option>
+                            </select>
+                        </div>
+                        <div class ="col-lg-2">
+                            <label><b>Width Unit</b></label>
+                            <select id="width_unit" class="form-control" required>
+                                <option value = "inch" selected>inch</option>
+                                <option value = "feet">feet</option>
+                            </select>
+                        </div>
+                        <div class ="col-lg-2">
+                            <label><b>Weight(lbs)</b></label>
+                            <input type="number" min="0" step = "any"  id="weight" name="weight" class="form-control" required>
+                            </input>
+                        </div>
+                    </div>
+
+                    <div class ="row">
+                        <div class ="col-lg-2">
+                            <label><b>Length</b></label>
+                            <input type="number" min="0" step = "1"  id="length" name="length" class="form-control" required>
+                        </div>
+                        <div class ="col-lg-2">
+                            <label><b>Length Fraction</b></label>
+                            <select id="length_fraction" name="length_fraction" class="form-control" required>
+                                <option value="0" selected>0</option>
+                                <option value="0.125">1/8</option>
+                                <option value="0.25">1/4</option>
+                                <option value="0.375">3/8</option>
+                                <option value="0.5">1/2</option>
+                                <option value="0.625">5/8</option>
+                                <option value="0.75">3/4</option>
+                                <option value="0.875">7/8</option>
+                            </select>
+                        </div>
+                        <div class ="col-lg-2">
+                            <label><b>Length Unit</b></label>
+                            <select id="length_unit" name = "length_unit" class="form-control" required>
+                                <option value = "inch">inch</option>
+                                <option value = "feet" selected>feet</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class = "row" id="hand_tool_specific">
+                        <!-- hand_tool_specfic attributes go here -->
+                    </div>
+                    <br>
+                    <div class = "col-lg-2">
+                        <input type="submit" value="Confirm" class="btn btn-primary btn-block"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div id = "power" class="container">
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+// dropdown menu method
+$(document).ready(function() {
+    var listManual = [{name: "Manual", value: "manual"}];
+    var list_hand_sub_type = [{name: "Screwdriver", value: "screwdriver"}, {
+        name: "Ratchet",
+        value: "ratchet"
+    },
+        {name: "Plier", value: "plier"}, {name: "Hammer", value: "hammer"}, {name: "Gun", value: "gun"}, {
+            name: "Socket",
+            value: "socket"
+        }, {name: "Wrench", value: "wrench"}];
+    var list_garden_sub_type = [{name: "Striking", value: "striking"}, {
+        name: "Wheelbarrows",
+        value: "wheelbarrows"
+    },
+        {name: "Rakes", value: "rakes"}, {name: "Pruner", value: "pruner"}, {
+            name: "Digger",
+            value: "digger"
+        }];
+    var list_ladder_sub_type = [{name: "Straight", value: "straight"}, {name: "Step", value: "step"}];
+    var list_power = [{name: "Electric", value: "electric"}, {name: "Cordless", value: "cordless"}, {name: "Gas", value: "gas"}]
+    var list_power_tool_sub_type = [{name: "Dill", value: "dill"}, {
+        name: "Saw",
+        value: "saw"
+    }, {name: "Sander", value: "sander"}, {name: "AirCompressor", value: "aircompressor"}, {
+        name: "Mixer", value: "mixer"
+    }, {name: "Generator", value: "generator"}];
+    //var list_all_tool_sub_type = list_ladder_sub_type.concat(list_garden_sub_type.concat(list_hand_sub_type.concat(list_power_tool_sub_type)));
+    var list_all_power_source = listManual.concat(list_power);
+    var list_ac_tool = [{name: "Drill", value: "drill"}, {name: "Saw", value: "saw"}, {
+        name: "Sander", value: "sander"},
+        {name: "AirCompressor", value: "aircompressor"}, {name: "Mixer", value: "mixer"}]
+    var list_dc_tool = [{name: "Drill", value: "drill"}, {name: "Saw", value: "saw"}, {
+        name: "Sander",
+        value: "sander"
+    }];
+    var list_gas_tool = [{name: "AirCompressor", value: "aircompressor"}, {
+        name: "Mixer",
+        value: "mixer"
+    }, {name: "Generator", value: "generator"}];
+
+    $("input[name='tool_type']").on('change', function () {
+        if ($(this).is(':checked') && $(this).val() === 'power tool') {
+            $('#power_source').empty();
+            $.each(list_power, function (index, value) {
+                $('#power_source').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $.each(list_ac_tool, function (index, value) {
+                $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+        } else {
+            $("#power").empty();
+            if ($(this).is(':checked') && $(this).val() === 'hand tool') {
+                $('#power_source').empty();
+                $('#sub_type').empty();
+                $.each(listManual, function (index, value) {
+                    $('#power_source').append('<option value="' + value.value + '">' + value.name + '</option>');
+                });
+                $.each(list_hand_sub_type, function (index, value) {
+                    $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+                });
+            } else if ($(this).is(':checked') && $(this).val() === 'garden tool') {
+                $('#power_source').empty();
+                $('#sub_type').empty();
+                $.each(listManual, function (index, value) {
+                    $('#power_source').append('<option value="' + value.value + '">' + value.name + '</option>');
+                });
+                $.each(list_garden_sub_type, function (index, value) {
+                    $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+                });
+            } else if ($(this).is(':checked') && $(this).val() === 'ladder') {
+                $('#power_source').empty();
+                $('#sub_type').empty();
+                $.each(listManual, function (index, value) {
+                    $('#power_source').append('<option value="' + value.value + '">' + value.name + '</option>');
+                });
+                $.each(list_ladder_sub_type, function (index, value) {
+                    $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+                });
+            }
+        }
+        $('#power_source').trigger("change").change();
+    });
+
+    var list_screwdriver = [{name:"Philips(cross)", value: "philips(cross)"},{name:"Hex", value: "hex"},
+        {name:"Torx", value: "torx"},{name:"Slotted(flat)", value: "slotted(flat)"}];
+    var list_socket = [{name:"Deep", value: "deep"},{name:"Standard", value: "standard"}];
+    var list_ratchet = [{name:"Adjustable", value: "adjustable"},{name:"Fixed", value: "fixed"}];
+    var list_wrench = [{name:"Crescent",value:"crescent"},{name:"Torque",value:"torque"},{name:"Pipe",value:"pipe"}];
+    var list_pliers = [{name:"Needle Nose",value:"needle nose"},{name:"Cutting",value:"cutting"},{name:"Crimper",value:"Crimper"}];
+    var list_gun = [{name:"Nail",value:"nail"},{name:"Staple",value:"staple"}];
+    var list_hammer = [{name:"Claw",value:"claw"},{name:"Sledge",value:"sledge"},{name:"Framing",value:"framing"}];
+    var list_digger = [{name:"Pointed Shovel",value:"pointed shovel"},{name:"Flat Shovel",value:"flat shover"},
+        {name:"Scoop Shovel",value:"scoop shovel"},{name:"Edger",value:"edger"}];
+    var list_pruner = [{name:"Sheer",value:"sheer"},{name:"Loppers",value:"loppers"},{name:"Hedge",value:"hedge"}];
+    var list_rakes = [{name:"Leaf",value:"leaf"},{name:"Landscaping",value:"landscaping"},{name:"Rock",value:"rock"}];
+    var list_wheelbarrows = [{name:"1-wheel",value:"1-wheel"},{name:"2-wheel",value:"2-wheel"}];
+    var list_striking = [{name:"Bar Pry",value:"bar pry"},{name:"Rubber Mallet",value:"rubber mallet"},
+        {name:"Tamper",value:"tamper"},{name:"Pick Axe",value:"pick axe"},
+        {name:"Single Bit Axe",value:"single bit axe"},];
+    var list_straight = [{name:"Rigid",value:"rigid"},{name:"Telescoping",value:"telescoping"}];
+    var list_step = [{name:"Folding",value:"folding"},{name:"Multi-position",value:"multi-position"}];
+    var list_drill = [{name:"Driver",value:"driver"},{name:"Hammer",value:"hammer"}];
+    var list_saw = [{name:"Circular",value:"circular"},{name:"Reciprocating",value:"reciprocating"},{name:"Jig",value:"jig"}];
+    var list_sander = [{name:"Finish",value:"finish"},{name:"Sheet",value:"sheet"},{name:"Belt",value:"belt"},
+        {name:"Random Orbital",value:"random orbital"}];
+    var list_gas = [{name:"Reciprocating",value:"reciprocating"},{name:"Concrete",value:"concrete"},{name:"Electric",value:"electric"}];
+
+    var hand_tool_specific = [{name:"Screw-size",value:"screw_size"},
+        {name:"Weight-capacity",value:"weight_capacity"},
+        {name:"Drive/Chuck-size",value:"drive_size"},
+        {name:"Deep-socket",value:"deep_socket"},
+        {name:"Sae-size",value:"sae_size"},
+        {name:"Adjustable",value:"adjustable"},
+        {name:"Gauge-rating",value:"gauge_rating"},
+        {name:"Capacity",value:"capacity"},
+        {name:"Anti-vibration",value:"anti_vibration"},
+        {name:"Handle material",value:"handle_material"},
+        {name:"Blade length",value:"blade_length"},
+        {name:"Blade width",value:"blade_width"},
+        {name:"Tine count", value: "tine_count"},
+        {name:"Wheel count", value: "wheel_count"},
+        {name:"Bin material", value: "bin_material"},
+        {name:"Bin volume", value: "bin_volume"},
+        {name:"Head weight", value: "head_weight"},
+        {name:"Rubber feet", value: "rubber_feet"},
+        {name:"Step count", value: "step_count"},
+        {name:"Pail shelf", value: "pail_shelf"},
+        {name:"Blade material",value:"blade_material"}
+        ]
+    var power_type = '<div class = "row">\n' +
+                            '<h2>Power Tool Only</h2>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Power Source</b></label>\n' +
+                                '<select id="power_type" name = "power_type" class="form-control" required>\n' +
+                                    '<option value="A/C">Electric (A/C)</option>\n' +
+                                    '<option value="D/C">Electric (D/C)</option>\n' +
+                                    '<option value="gas">Gas</option>\n' +
+                                '</select>\n' +
+                            '</div>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Volt Rating</b></label>\n' +
+                                '<select id="volt_rating" name="volt_rating" class="form-control" required>\n' +
+                                    '<option value="110">110V</option>\n' +
+                                    '<option value="120">120V</option>\n' +
+                                    '<option value="220">220V</option>\n' +
+                                    '<option value="2400">240V</option>\n' +
+                                '</select>\n' +
+                            '</div>\n' +
+                        '</div>'
+
+    var cordless_power_type = '<div class = "row">\n' +
+                                '<h2>Power Tool Only</h2>\n' +
+                                '<div class = "col-lg-2">\n' +
+                                    '<label><b>Power Source</b></label>\n' +
+                                    '<select id="power_type" name = "power_type" class="form-control" required>\n' +
+                                        '<option value="A/C">Electric (A/C)</option>\n' +
+                                        '<option value="D/C">Electric (D/C)</option>\n' +
+                                        '<option value="gas">Gas</option>\n' +
+                                    '</select>\n' +
+                                '</div>\n' +
+                                '<div class = "col-lg-3">\n' +
+                                    '<label><b>D/C Volt Rating (7.2-80.0 Volts)</b></label>\n' +
+                                    '<input type = "number" id="volt_rating" name="volt_rating" class="form-control" required>\n' +
+                                '</div>\n' +
+                              '</div>'
+
+    var common_power = '<div class="row">\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Amp Rating</b></label>\n' +
+                                '<input type = "number" step="any" id="amp_rating" name="amp_rating" placeholder="Unit as A" class="form-control" required>\n' +
+                            '</div>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Min RPM Rating</b></label>\n' +
+                                '<input type = "number" id="min_rpm_rating" name="min_rpm_rating" class="form-control" required>\n' +
+                            '</div>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Pressure Max (RPM)</b></label>\n' +
+                                '<input type = "number" id="max_rpm_rating" name="max_rpm_rating" class="form-control">\n' +
+                            '</div>\n' +
+                          '</div>'
+
+    var drill_property ='<div id="drill_property" class = "row">\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Adjustable clutch</b></label>\n' +
+                                '<select id="adjustable_clutch" name="adjustable_clutch" class="form-control">\n' +
+                                    '<option ></option>\n' +
+                                    '<option value = "1">True</option>\n' +
+                                    '<option value = "0">False</option>\n' +
+                                '</select>\n' +
+                            '</div>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Min Torque Rating (ft-lb)</b></label>\n' +
+                                '<input type ="number" id="min_torque_rating" name="min_torque_rating" class="form-control" required>\n' +
+                            '</div>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Torque Max (ft-lb)</b></label>\n' +
+                                '<input type = "number" id="max_torque_rating" name="max_torque_rating" class="form-control">\n' +
+                            '</div>\n' +
+                        '</div>'
+
+    var saw_property = '<div id= "saw_property" class="row">\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Blade Size</b></label>\n' +
+                                '<input type = "number" step="any" id="blade_size" name="blade_size" placeholder="Unit as inch" class="form-control" required>\n' +
+                            '</div>\n' +
+                         '</div>'
+
+    var sander_property = '<div id= "sander_property" class="row">\n' +
+                    '<div class = "col-lg-2">\n' +
+                        '<label><b>Dust Bag</b></label>\n' +
+                        '<select id="dust_bag" name="dust_bag" class="form-control" required>\n' +
+                            '<option value = "1">True</option>\n' +
+                            '<option value = "0">False</option>\n' +
+                        '</select>\n' +
+                    '</div>\n' +
+                  '</div>'
+
+    var aircompressor_property = '<div id="air-compressor_property" class="row">\n' +
+                                    '<div class = "col-lg-2">\n' +
+                                        '<label><b>Tank Size</b></label>\n' +
+                                        '<input type="number" step="any" id="tank_size" name="tank_size" placeholder="Unit as Gallon" class="form-control" required>\n' +
+                                    '</div>\n' +
+                                    '<div class = "col-lg-2">\n' +
+                                        '<label><b>Pressure Rating</b></label>\n' +
+                                        '<input type="number" id="pressure_rating" name="pressure_rating" placeholder="Unit as Psi" class="form-control">\n' +
+                                    '</div>\n' +
+                                   '</div>'
+
+    var mixer_property = '<div id="mixer_property" class="row">\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Motor Rating</b></label>\n' +
+                                '<input type="number" step="any" id="motor_rating" name="motor_rating" placeholder="Unit as Horsepower(HP)" class="form-control" required>\n' +
+                            '</div>\n' +
+                            '<div class = "col-lg-2">\n' +
+                                '<label><b>Drum Size</b></label>\n' +
+                                '<input type="number" step="any" id="drum_size" name="drum_size" placeholder="Unit as Psi" class="form-control" required>\n' +
+                            '</div>\n' +
+                         '</div>'
+
+    var powergenerator_property = '<div id="power-generator_property" class="row">\n' +
+                                    '<div class = "col-lg-2">\n' +
+                                        '<label><b>Power Rating</b></label>\n' +
+                                        '<input type="number" step="any" id="power_rating" name="power_rating" placeholder="Unit as Watt" class="form-control" required>\n' +
+                                    '</div>\n' +
+                                   '</div>'
+
+    var accessory = '<div class="row">\n' +
+                        '<h2>Power Tool Accessory</h2>\n' +
+                        '<div class = "col-lg-2">\n' +
+                            '<label><b>Accessory Quantity</b></label>\n' +
+                            '<input type = "number" min="0" step="1" id="accessory_quantity" name="accessory_quantity" class="form-control" required>\n' +
+                        '</div>\n' +
+                        '<div class = "col-lg-2">\n' +
+                            '<label><b>Accessory Description</b></label>\n' +
+                            '<input type = "text" id="accessory_description" name="accessory_description" class="form-control" required>\n' +
+                        '</div>\n' +
+                   '</div>\n' +
+                   '<br>'
+
+    var cordless_property = '<div class = "row">\n' +
+                                '<h2> Cordless Tools Only </h2>\n' +
+                                '<div class = "col-lg-2">\n' +
+                                    '<label><b>Battery Type</b></label>\n' +
+                                    '<select id="battery_type" name="battery_type" class="form-control" required>\n' +
+                                        '<option value="Li-Ion">Li-Ion</option>\n' +
+                                        '<option value="Ni-cd">Ni-cd</option>\n' +
+                                        '<option value="NiMH">Ni-MH</option>\n' +
+                                    '</select>\n' +
+                                '</div>\n' +
+                            '</div>\n' +
+                            '<br>'
+
+    $("#power_source").on("change", function () {
+        if ($(this).val() === 'electric') {
+            $("#power_tool").prop("checked", true);
+            $('#sub_type').empty();
+            $.each(list_ac_tool, function (index, value) {
+                $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+        } else if ($(this).val() === 'cordless') {
+            $("#power_tool").prop("checked", true);
+            $('#sub_type').empty();
+            $.each(list_dc_tool, function (index, value) {
+                $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+        } else if ($(this).val() === 'gas'){
+            $("#power_tool").prop("checked", true);
+            $('#sub_type').empty();
+            $.each(list_gas_tool, function (index, value) {
+                $('#sub_type').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+        } else {
+            $("#power_tool").prop("checked", false);
+            $("#power").empty();
+        }
+        $('#sub_type').trigger("change").change();
+    })
+
+        $("#sub_type").on('change', function () {
+        if ($(this).val() === 'screwdriver') {
+            $('#sub_option').empty();
+            $.each(list_screwdriver, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[0].name + '</b></label>\n' +
+                '<input type="number" min="0" step = "1" name = "'+ hand_tool_specific[0].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'socket') {
+            $('#sub_option').empty();
+            $.each(list_socket, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[3].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[3].value + '" class="form-control">\n' +
+                '<option></option>\n'+
+                '<option value="1">True</option>\n' +
+                '<option value="0">False</option>\n' +
+                '</select>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[2].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[2].value + '" class="form-control" required>\n' +
+                '<option value="0.25">1/4</option>\n'+
+                '<option value="0.375">3/8</option>\n'+
+                '<option value="0.5">1/2</option>\n'+
+                '<option value="0.75">3/4</option>\n'+
+                '</select>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[4].name + '</b></label>\n' +
+                '<input type="number" min="0" step="any" name = "' + hand_tool_specific[4].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+            } else if ($(this).val() === 'ratchet') {
+            $('#sub_option').empty();
+            $.each(list_ratchet, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[2].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[2].value + '" class="form-control" required>\n' +
+                '<option value="0.25">1/4</option>\n'+
+                '<option value="0.375">3/8</option>\n'+
+                '<option value="0.5">1/2</option>\n'+
+                '<option value="0.75">3/4</option>\n'+
+                '</select>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'wrench') {
+            $('#sub_option').empty();
+            $.each(list_wrench, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[2].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[2].value + '" class="form-control" required>\n' +
+                '<option value="0.25">1/4</option>\n'+
+                '<option value="0.375">3/8</option>\n'+
+                '<option value="0.5">1/2</option>\n'+
+                '<option value="0.75">3/4</option>\n'+
+                '</select>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'plier') {
+            $('#sub_option').empty();
+            $.each(list_pliers, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[5].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[5].value + '" class="form-control" required>\n' +
+                '<option value="1">True</option>\n' +
+                '<option value="0">False</option>\n' +
+                '</select>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'gun') {
+            $('#sub_option').empty();
+            $.each(list_gun, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[6].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[6].value + '" class="form-control" required>\n' +
+                '<option value="18">18G</option>\n' +
+                '<option value="20">20G</option>\n' +
+                '<option value="22">22G</option>\n' +
+                '<option value="24">24G</option>\n' +
+                '</select>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[7].name + '</b></label>\n' +
+                '<input type="number" min = "0" step="1" name = "' + hand_tool_specific[7].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'hammer') {
+            $('#sub_option').empty();
+            $.each(list_hammer, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[8].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[8].value + '" class="form-control">\n' +
+                '<option></option>\n'+
+                '<option value="1">True</option>\n' +
+                '<option value="0">False</option>\n' +
+                '</select>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'digger') {
+            $('#sub_option').empty();
+            $.each(list_digger, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[9].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[9].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[10].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[10].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[11].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[11].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'pruner') {
+            $('#sub_option').empty();
+            $.each(list_pruner, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[9].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[9].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[10].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[10].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[20].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[20].value + '" class="form-control">\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'rakes') {
+            $('#sub_option').empty();
+            $.each(list_rakes, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[9].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[9].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[12].name + '</b></label>\n' +
+                '<input type="number" min="0" step="1" name = "' + hand_tool_specific[12].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'wheelbarrows') {
+            $('#sub_option').empty();
+            $.each(list_wheelbarrows, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[9].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[9].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[13].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="1" name = "' + hand_tool_specific[13].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[14].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[14].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[15].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[15].value + '" class="form-control">\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'striking') {
+            $('#sub_option').empty();
+            $.each(list_striking, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[9].name + '</b></label>\n' +
+                '<input type="text" name = "' + hand_tool_specific[9].value + '" class="form-control">\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[16].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[16].value + '" class="form-control" rquired>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'straight') {
+            $('#sub_option').empty();
+            $.each(list_straight, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[17].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[17].value + '" class="form-control">\n' +
+                '<option></option>\n' +
+                '<option value="1">True</option>\n' +
+                '<option value="0">False</option>\n' +
+                '</select>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[18].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="1" name = "' + hand_tool_specific[18].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[1].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[1].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'step') {
+            $('#sub_option').empty();
+            $.each(list_step, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#hand_tool_specific").empty();
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[19].name + '</b></label>\n' +
+                '<select name = "' + hand_tool_specific[19].value + '" class="form-control">\n' +
+                '<option></option>\n'+
+                '<option value="1">True</option>\n' +
+                '<option value="0">False</option>\n' +
+                '</select>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[18].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="1" name = "' + hand_tool_specific[18].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>');
+            $("#hand_tool_specific").append('<div class ="col-lg-2">\n' +
+                '<label><b>' + hand_tool_specific[1].name + '</b></label>\n' +
+                '<input type = "number" min="0" step="any" name = "' + hand_tool_specific[1].value + '" class="form-control" required>\n' +
+                '</input>\n' +
+                '</div>').change();
+        } else if ($(this).val() === 'drill') {
+            $('#sub_option').empty();
+            $.each(list_drill, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#drive_chuck").prop("disabled", true);
+            $("#hand_tool_specific").empty();
+            $("#power").empty();
+            if ($("#power_source").val() === "electric"){
+                $("#power").append([power_type,common_power,drill_property,accessory]);
+                $("#power_type").val("A/C").change();
+            } else {
+                $("#power").append([cordless_power_type,common_power,drill_property,accessory,cordless_property]);
+                $("#power_type").val("D/C").change();
+            };
+        } else if ($(this).val() === 'saw') {
+            $('#sub_option').empty();
+            $.each(list_saw, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#drive_chuck").prop("disabled", true);
+            $("#hand_tool_specific").empty();
+            $("#power").empty();
+            if ($("#power_source").val() === "electric"){
+                $("#power").append([power_type,common_power,saw_property,accessory]);
+                $("#power_type").val("A/C").change();
+            } else {
+                $("#power").append([cordless_power_type,common_power,saw_property,accessory,cordless_property]);
+                $("#power_type").val("D/C").change();
+            };
+        } else if ($(this).val() === 'sander') {
+            $('#sub_option').empty();
+            $.each(list_sander, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#drive_chuck").prop("disabled", true);
+            $("#hand_tool_specific").empty();
+            $("#power").empty();
+            if ($("#power_source").val() === "electric"){
+                $("#power").append([power_type,common_power,sander_property,accessory]);
+                $("#power_type").val("A/C").change();
+            } else {
+                $("#power").append([cordless_power_type,common_power,sander_property,accessory,cordless_property]);
+                $("#power_type").val("D/C").change();
+            };
+        } else if ($(this).val() === 'aircompressor') {
+            $('#sub_option').empty();
+            $.each(list_gas, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#drive_chuck").prop("disabled", true);
+            $("#hand_tool_specific").empty();
+            $("#power").empty();
+            $("#power").append([power_type,common_power,aircompressor_property,accessory]);
+            if ($("#power_source").val() === "electric"){
+                $("#power_type").val("A/C").change();
+            } else {
+                $("#power_type").val("gas").change();
+            };
+        } else if ($(this).val() === "mixer") {
+            $('#sub_option').empty();
+            $.each(list_gas, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#drive_chuck").prop("disabled", true);
+            $("#hand_tool_specific").empty();
+            $("#power").empty();
+            $("#power").append([power_type,common_power,mixer_property,accessory]);
+            if ($("#power_source").val() === "electric"){
+                $("#power_type").val("A/C").change();
+            } else {
+                $("#power_type").val("gas").change();
+            };
+        }else if ($(this).val() === 'generator') {
+            $('#sub_option').empty();
+            $.each(list_gas, function (index, value) {
+                $('#sub_option').append('<option value="' + value.value + '">' + value.name + '</option>');
+            });
+            $("#drive_chuck").prop("disabled", true);
+            $("#hand_tool_specific").empty();
+            $("#power").empty();
+            $("#power").append([power_type,common_power,powergenerator_property,accessory]);
+            $("#power_type").val("gas").change();
+        }
+    })
+    $("#power_type").on("change", function (){
+        if ($(this).val() === "A/C"){
+            alert("a/c");
+            $("#power_source").val("electric");
+        } else if ($(this).val() === "D/C") {
+            alert("a/c");
+            $("#power_source").val("cordless");
+        } else if ($(this).val() === "gas") {
+            $("#power_source").val("gas");
+        }
+        $('#power_source').trigger("change").change();
+    })
+});
+</script>

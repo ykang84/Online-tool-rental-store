@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <title>Clerk Report</title>
+</head>
+<body>
+<% include common/navbar_clerk.ejs %>
+<h1>Clerk Report</h1>
+<hr>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Hire Date</th>
+                <th>Number of Pickups</th>
+                <th>Number of Dropoffs</th>
+                <th>Combined Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < result.length; i++) { %>
+                <tr>
+                    <td><%= result[i].first_name%></td>
+                    <td><%= result[i].middle_name%></td>
+                    <td><%= result[i].last_name%></td>
+                    <td><%= result[i].email%></td>
+                    <td><%= new Date(result[i].hire_date).toISOString().slice(0, 10)%></td>
+                    <td><%= result[i].number_of_pickups%></td>
+                    <td><%= result[i].number_of_dropoffs%></td>
+                    <td><%= result[i].total%></td>
+                </tr>
+            <%}%>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
